@@ -32,9 +32,17 @@ void MainWindow::addTask()
                                          tr("Untitled task"),
                                          &ok);
     if (ok && !name.isEmpty()) {
+        qDebug() << "Adding new task";
         Task* task = new Task(name);
+        connect(task, &Task::removed, this, &MainWindow::removeTask);
         mTasks.append(task);
         ui->tasksLayout->addWidget(task);
     }
+}
 
+void MainWindow::removeTask(Task *task)
+{
+    mTasks.removeOne(task);
+    ui->tasksLayout->removeWidget(task);
+    delete task;
 }
